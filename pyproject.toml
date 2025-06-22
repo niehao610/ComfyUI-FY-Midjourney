@@ -3,7 +3,7 @@ name = "comfyui-midjourneyhub"
 version = "0.1.0"
 description = "A ComfyUI custom node for integrating with Midjourney API"
 authors = [
-    {name = "Qianjing Jia", email = "jiaqianjing@gmail.com"}
+    {name = "Forry", email = "niehao610@gmail.com"}
 ]
 readme = "README.md"
 requires-python = ">=3.8"
@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/jiaqianjing/ComfyUI-MidjourneyHub"
+Repository = "https://github.com/niehao610/ComfyUI-FY-Midjourney"
 
 [build-system]
 requires = ["setuptools>=45", "wheel"]
@@ -34,6 +34,6 @@ profile = "black"
 multi_line_output = 3
 
 [tool.comfy]
-PublisherId = "jiaqianjing"
-DisplayName = "ComfyUI-MidjourneyHub"
+PublisherId = "forry"
+DisplayName = "ComfyUI-FY-Midjourney"
 Icon = ""

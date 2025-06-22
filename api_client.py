@@ -65,7 +65,7 @@ class MJClient:
             logger.debug(f"无法读取Windows代理设置: {e}")
         
         # 方法3: 常见的本地代理端口检测
-        common_proxy_ports = [7890, 7891, 1080, 8080, 8888, 10809]
+        common_proxy_ports = [33210]
         for port in common_proxy_ports:
             proxy_url = f"http://127.0.0.1:{port}"
             if self._test_proxy_connection(proxy_url):

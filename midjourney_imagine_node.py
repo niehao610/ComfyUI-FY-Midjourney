@@ -12,8 +12,7 @@ class MidjourneyImagineNode:
         return {
             "required": {
                 "prompt": ("STRING", {"multiline": True, "default": "cat,cute,"}),
-                "base_model": (["midjourney", "niji"], {"default": "midjourney"}),
-                "version": (["5.0", "5.1", "5.2", "6", "6.1", "7.0"], {"default": "6"}),
+                "app_key": ("STRING", {"default": "input your app key"}),   
             },
             "optional": {
                 # "negative_prompt": ("STRING", {"multiline": True, "default": ""}),
@@ -22,13 +21,17 @@ class MidjourneyImagineNode:
                 # "quality": ([".25", ".5", "1"], {"default": "1"}),
                 "chaos": ("INT", {"default": 0, "min": 0, "max": 100, "step": 1}),
                 "weird": ("INT", {"default": 0, "min": 0, "max": 3000, "step": 1}),
-                "tile": ("BOOLEAN", {"default": False}),
-                "q2": ("BOOLEAN", {"default": False}),
-                "sref": ("STRING", {"default": ""}),
-                # "no": ("STRING", {"default": ""}),
-                "repeat": ("INT", {"default": 1, "min": 1, "max": 40, "step": 1}),
-                "seed": ("INT", {"default": -1}),
-                # "control_after_generate": (["fixed", "increment", "decrement", "randomize"], {"default": "fixed"}),
+                #"tile": ("BOOLEAN", {"default": False}),
+                #"q2": ("BOOLEAN", {"default": False}),
+                "sref1": ("STRING", {"default": ""}),
+                "sref2": ("STRING", {"default": ""}),
+                "sw": ("INT", {"default": 30, "min": 0, "max": 100, "step": 1}),
+                "oref": ("STRING", {"default": ""}),
+                "ow": ("INT", {"default": 100, "min": 0, "max": 1000, "step": 10}), 
+                           
+                #"repeat": ("INT", {"default": 1, "min": 1, "max": 40, "step": 1}),
+                #"seed": ("INT", {"default": -1}),
+                #"control_after_generate": (["fixed", "increment", "decrement", "randomize"], {"default": "fixed"}),
             }
         }
 
@@ -37,31 +40,37 @@ class MidjourneyImagineNode:
     FUNCTION = "generate"
     CATEGORY = "image"
 
-    def generate(self, prompt, base_model, version, image_ratio="1:1",
-                stylize=100, chaos=0, weird=0, tile=False, q2=False, sref="",
-                repeat=1, seed=-1):
+    def generate(self, prompt, app_key, image_ratio="1:1",
+                stylize=100, chaos=0, weird=0, sref1="", sref2="", sw=30, oref="", ow=100):
         try:
             # 构建完整提示词
             params = prompt
             params += f" --ar {image_ratio} --s {stylize} "
+
             if chaos > 0:
                 params += f" --c {chaos}"
+
             if weird > 0:
                 params += f" --weird {weird}"
-            if tile:
-                params += " --tile"
-            if q2:
-                params += " --q 2"
-            if sref:
-                params += f" --sref {sref}"
-            if base_model != "niji":
-                params += f" --v {version}"
-            else:
-                params += " --niji"
-            if repeat > 1:
-                params += f" --repeat {repeat}"
-            if seed != -1:
-                params += f" --seed {seed}"
+
+            if sref1 and len(sref1) > 1:
+                params += f" --sref {sref1}"
+
+                if sref2 and len(sref2) > 1:
+                    params += f"  {sref2}"
+
+                if sw > 0:
+                    params += f" --sw {sw}"
+
+            if oref and len(oref) > 1:
+                params += f" --oref {oref}"
+                if ow > 0:
+                    params += f" --ow {ow}"
+
+            params += f" --v 7.0"
+
+            if len(app_key) < 3 or  app_key == "input your app key":
+                raise ValueError("Invalid app key")
 
             # 获取或创建事件循环
             try:

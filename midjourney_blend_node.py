@@ -102,6 +102,7 @@ class MidjourneyBlendNode:
                     state=state_val,
                 )
             )
+            
             if not task_id:
                 raise ValueError("Failed to get task_id from Midjourney API (blend)")
 
