@@ -71,7 +71,9 @@ class MidjourneyImagineNode:
 
             if len(app_key) < 3 or  app_key == "input your app key":
                 raise ValueError("Invalid app key")
-
+            
+            self.api_client.api_key = app_key
+            
             # 获取或创建事件循环
             try:
                 loop = asyncio.get_event_loop()

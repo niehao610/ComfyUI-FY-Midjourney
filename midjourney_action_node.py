@@ -13,6 +13,8 @@ class MidjourneyActionNode:
             "required": {
                 "task_id": ("STRING", {"multiline": False}),
                 "action": (["U1", "U2", "U3", "U4", "V1", "V2", "V3", "V4"], {"default": "U1"}),
+                "app_key": ("STRING", {"default": "input your app key"}),   
+
             }
         }
 
@@ -20,8 +22,10 @@ class MidjourneyActionNode:
     FUNCTION = "upscale_or_vary"
     CATEGORY = "image"
 
-    def upscale_or_vary(self, task_id, action):
+    def upscale_or_vary(self, task_id, action, app_key):
         try:
+            self.api_client.api_key = app_key
+
             try:
                 loop = asyncio.get_event_loop()
             except RuntimeError:

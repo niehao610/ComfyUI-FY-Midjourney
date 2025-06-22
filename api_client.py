@@ -16,7 +16,7 @@ logger.info(f"config: {config}")
 class MJClient:
     def __init__(self):
         self.api_url = config['MIDJOURNEY_API']['api_url']
-        self.api_key = config['MIDJOURNEY_API']['api_key']
+        self.api_key = ""
         # 设置超时配置
         self.timeout = aiohttp.ClientTimeout(
             total=300,        # 总超时时间 5 分钟
@@ -144,7 +144,7 @@ class MJClient:
         if action_type == "upscale":
             url = f"{self.api_url}/v1/api/trigger/upscale"
         elif action_type == "vary":
-            url = f"{self.api_url}/v1/api/trigger/vary"
+            url = f"{self.api_url}/v1/api/trigger/variation"
 
         payload = json.dumps({
             "index": int(index),
@@ -283,7 +283,7 @@ class MJClient:
                         
                         elif status in ['', 'SUBMITTED', 'IN_PROGRESS', 'NOT_START']:
                             logger.info(f"Task status: {status}, progress: {data.get('progress', 'Unknown')}")
-                            await asyncio.sleep(5)  # 异步等待3秒
+                            await asyncio.sleep(10)  # 异步等待3秒
                         
                         else:
                             raise Exception(f"Unknown task status: {data['status']}")
